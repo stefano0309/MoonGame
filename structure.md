@@ -9,12 +9,12 @@ Qui è presente in alto il titolo e sotto di esso due pulsanti **play** e **quit
 
 Mentre per i pulsanti **start** e **quit** usiamo il controllo eventi utilizzando le immagine e il *rect* per controllare gli eventi del mouse in modo tale che cliccando in quel area restituisca *true* ed esegua le istruzioni:
 
- if event.type == pygame.MOUSEBUTTONDOWN:
-            if play_rect.collidepoint(event.pos):
-                start = True
+  if event.type == pygame.MOUSEBUTTONDOWN:
+             if play_rect.collidepoint(event.pos):
+                 start = True
 
-            if quit_rect.collidepoint(event.pos):
-                running = False
+             if quit_rect.collidepoint(event.pos):
+                 running = False
 
 Inoltre cliccando sul pulsante *play* è possibile uscire dalla schermata con valore stage = 0 con un animazione di testo e pulsanti che escono dall alto da destra e da sinistra 
  
