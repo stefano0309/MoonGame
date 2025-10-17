@@ -20,6 +20,10 @@ background = pygame.image.load("images/background.jpg").convert()
 title = pygame.image.load("images/title.png").convert_alpha()
 title_rect = title.get_rect(center=(350, 50))
 
+#stage 2
+go = pygame.image.load("images/gameOver.png").convert_alpha()
+go_rect = go.get_rect(center=(350, 200))
+
 #Play button
 play = pygame.image.load("images/playText.png").convert_alpha()
 play_red = pygame.transform.scale(play, (200,80))
@@ -38,19 +42,18 @@ meteor_pos = []
 for i in range(5):
     x = random.randint(0, w-50)
     y = random.randint(-200, -100)
-    meteor_pos.append(pygame.FRect(x, y, 10, 10))
+    meteor_pos.append(pygame.FRect(x, y, 20, 20))
 
 
 
 #player
 player = pygame.image.load("images/player.png").convert_alpha()
 player_red = pygame.transform.scale(player, (90,100))
-player_rect = player_red.get_frect(center=(350, 200),size=(20,10))
+player_rect = player_red.get_frect(center=(350, 200),size=(10,20))
 
 
 #Stage cond
 start = False
-meteorMove = False
 
 #Tasti movimento
 kd = False
@@ -91,12 +94,14 @@ while running:
             if event.key == pygame.K_s:
                 ks = False
     screen.blit(background, (0,0))
-    #stage
+
+    #start
     if stage == 0:
         screen.blit(title, title_rect)
         screen.blit(play_red, play_rect)
         screen.blit(quit_red, quit_rect)
 
+    #game
     if stage == 1:
         screen.blit(player_red, player_rect)
         for meteor_rect in meteor_pos:
@@ -107,7 +112,13 @@ while running:
                 meteor_rect.y = random.randint(-200, -100)
             if player_rect.colliderect(meteor_rect):
                 print("Game Over")
+                stage += 1
+    
+    #game over
+    if stage == 2:
+        screen.blit(go, go_rect)
 
+    
     #start animation
     if start:
         title_rect.y -= 2
