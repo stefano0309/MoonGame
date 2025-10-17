@@ -1,0 +1,147 @@
+import pygame
+import time
+import random
+
+pygame.init()
+
+#Inizializzazione
+w = 700
+h = 400
+screen = pygame.display.set_mode((w,h))
+pygame.display.set_caption("Moon Game")
+clock = pygame.time.Clock()
+running = True
+stage = 0
+
+#Background
+background = pygame.image.load("images/background.jpg").convert()
+
+#stage 0
+title = pygame.image.load("images/title.png").convert_alpha()
+title_rect = title.get_rect(center=(350, 50))
+
+#Play button
+play = pygame.image.load("images/playText.png").convert_alpha()
+play_red = pygame.transform.scale(play, (200,80))
+play_rect = play_red.get_rect(center=(250,200))
+
+#Quit button
+quit_button = pygame.image.load("images/quitText.png").convert_alpha()
+quit_red = pygame.transform.scale(quit_button, (200,70))
+quit_rect = quit_red.get_rect(center=(450,210))
+
+#meteor
+meteor = pygame.image.load("images/meteor.png").convert_alpha()
+meteor_red = pygame.transform.scale(meteor, (50,50))
+
+meteor_pos = []
+for i in range(5):
+    x = random.randint(0, w-50)
+    y = random.randint(-200, -100)
+    meteor_pos.append(pygame.FRect(x, y, 10, 10))
+
+
+
+#player
+player = pygame.image.load("images/player.png").convert_alpha()
+player_red = pygame.transform.scale(player, (90,100))
+player_rect = player_red.get_frect(center=(350, 200),size=(20,10))
+
+
+#Stage cond
+start = False
+meteorMove = False
+
+#Tasti movimento
+kd = False
+ka = False
+kw = False
+ks = False
+
+
+while running:
+    dt =clock.tick(60) / 1000
+    #Eventi
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if play_rect.collidepoint(event.pos):
+                start = True
+
+            if quit_rect.collidepoint(event.pos):
+                running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_d:
+                kd = True                 
+            if event.key == pygame.K_a:
+                ka = True
+            if event.key == pygame.K_w:
+                kw = True
+            if event.key == pygame.K_s:
+                ks = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_d:
+                kd = False
+            if event.key == pygame.K_a:
+                ka = False
+            if event.key == pygame.K_w:
+                kw = False
+            if event.key == pygame.K_s:
+                ks = False
+    screen.blit(background, (0,0))
+    #stage
+    if stage == 0:
+        screen.blit(title, title_rect)
+        screen.blit(play_red, play_rect)
+        screen.blit(quit_red, quit_rect)
+
+    if stage == 1:
+        screen.blit(player_red, player_rect)
+        for meteor_rect in meteor_pos:
+            meteor_rect.y += 2
+            screen.blit(meteor_red, meteor_rect)
+            if meteor_rect.top > h:
+                meteor_rect.x = random.randint(0, w-50)
+                meteor_rect.y = random.randint(-200, -100)
+            if player_rect.colliderect(meteor_rect):
+                print("Game Over")
+
+    #start animation
+    if start:
+        title_rect.y -= 2
+        play_rect.x -= 4
+        quit_rect.x += 4
+        if title_rect.bottom <= 0 and play_rect.right <= 0 and quit_rect.left >= w:
+            stage += 1
+            start = False
+
+
+    #Bordo schermo x player
+    if player_rect.right >= w:
+        kd = False
+    if player_rect.left <= 0:
+        ka = False
+    
+    #Bordo schermo y player
+    if player_rect.top <= 0:
+        kw = False
+    if player_rect.bottom >= h:
+        ks = False
+
+    #Movimenti su x
+    if kd:
+        player_rect.x += 2
+    if ka:
+        player_rect.x -= 2
+    #Movimenti su y
+    if kw:
+        player_rect.y -= 2
+    if ks:
+        player_rect.y += 2
+    
+
+    pygame.display.update()
+
+pygame.quit()
