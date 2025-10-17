@@ -4,7 +4,7 @@ Utilizzando Pygame:
 1. Inizializzo lo schermo del gioco
 2. Set Up schermo clock e nome schermo
 3. Stage
-    - 0: Schermata iniziale 
+ - 0: Schermata iniziale 
 Qui è presente in alto il titolo e sotto di esso due pulsanti **play** e **quit** e un background che rimane uguale su tutti gli sfondi.
 
 Mentre per i pulsanti **start** e **quit** usiamo il controllo eventi utilizzando le immagine e il *rect* per controllare gli eventi del mouse in modo tale che cliccando in quel area restituisca *true* ed esegua le istruzioni:
@@ -18,7 +18,7 @@ Mentre per i pulsanti **start** e **quit** usiamo il controllo eventi utilizzand
 
 Inoltre cliccando sul pulsante *play* è possibile uscire dalla schermata con valore stage = 0 con un animazione di testo e pulsanti che escono dall alto da destra e da sinistra 
  
-    - 1: Schermata di gioco
+ - 1: Schermata di gioco
 Qui è presente la navicella spaziale ovvero il **player** il background rimane lo stesso sopra l'asse **y** troviamo tra *-200 e -100* vengono generati i 5 meteoriti con un **x** tra 0 e la massima grandezza dello schermo meno *y meteor*.
 
 Quindi per realizzare ciò creiamo una lista di **FRect** con **x** e **y** e scala del meteorite all'interno di frect.
@@ -31,6 +31,6 @@ Poi definiamo i limiti dello schermo per la navicella spaziale rispetto a **x** 
 
 La schermata di **game_over** avviene quando le due hitbox 20x20 e 20x20 si toccano viene rilevato e si passa a stage 2.
 
-    - 2: Schermata di game over
+- 2: Schermata di game over
 
 Viene visualizzata una schermata con scritta **rossa** e due pulsanti che invitano a rigiocare o a uscire userei di nuovo il *quit* gia presente per lo stage 0 e aggiungerei un pulsante per il rigioco per cui va creata una nuovo **rect**. 
