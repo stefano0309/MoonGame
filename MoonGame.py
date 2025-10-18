@@ -3,8 +3,8 @@ import time
 import random
 
 pygame.init()
-
-#Inizializzazione
+pygame.mixer.init()
+#Inizializzazione gioco
 w = 700
 h = 400
 screen = pygame.display.set_mode((w,h))
@@ -13,6 +13,12 @@ pygame.display.set_icon(pygame.image.load("images/icon.png").convert_alpha())
 clock = pygame.time.Clock()
 running = True
 stage = 0
+
+#Inizializazione musica
+pygame.mixer_music.load("music/music.mp3")
+volume = 0.25
+pygame.mixer.music.set_volume(volume)  # valori di musica da 0 a 1
+pygame.mixer.music.play(-1)   # loop
 
 #Background
 background = pygame.image.load("images/background.jpg").convert_alpha()
@@ -68,7 +74,7 @@ for i in range(5):
 player = pygame.image.load("images/player.png").convert_alpha()
 player_red = pygame.transform.scale(player, (90,100))
 player_rect = player_red.get_rect(center=(350, 200))
-player_hitbox = player_rect.inflate(-50, -50)
+player_hitbox = player_rect.inflate(-55, -50)
 
 
 #Stage cond
@@ -133,6 +139,7 @@ while running:
 
     #game
     if stage == 1:
+        pygame.mixer.music.pause() 
         screen.blit(player_red, player_rect)
         #debug player
         #pygame.draw.rect(screen, "red", player_hitbox, 2)
@@ -146,6 +153,9 @@ while running:
             #debug meteor
             #pygame.draw.rect(screen, "red", meteor_rect, 2)
             if player_hitbox.colliderect(meteor_rect):
+                pygame.mixer.Sound("effect/crash.mp3").play()
+                time.sleep(2)
+                volume = 0
                 stage += 1
                 #debug game over
                 #print(timer)
@@ -154,6 +164,11 @@ while running:
 
     #game over
     if stage == 2:
+        volume += 0.003
+        if volume >= 0.25:
+            volume = 0.25
+        pygame.mixer.music.set_volume(volume)
+        pygame.mixer.music.unpause() 
         screen.blit(go, go_rect)
         play_rect.center = (250, 200)
         screen.blit(play_red, play_rect)
@@ -164,10 +179,14 @@ while running:
     
     #start animation
     if start:
+        volume -= 0.003
+        if volume <= 0:
+            volume = 0
+        pygame.mixer.music.set_volume(volume)
         title_rect.y -= 2
         play_rect.x -= 4
         quit_rect.x += 4
-        if title_rect.bottom <= 0 and play_rect.right <= 0 and quit_rect.left >= w:
+        if title_rect.bottom <= 0 and play_rect.right <= 0 and quit_rect.left >= w and volume == 0:
             stage += 1
             start = False
 
