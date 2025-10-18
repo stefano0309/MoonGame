@@ -48,6 +48,10 @@ timer = 0
 go = pygame.image.load("images/gameOver.png").convert_alpha()
 go_rect = go.get_rect(center=(350, 100))
 
+#point text
+font_var = pygame.font.Font("font/Pixels.ttf", 50)
+
+
 #Play button
 play = pygame.image.load("images/playText2.png").convert_alpha()
 play_red = pygame.transform.scale(play, (play.get_width()*1.5,play.get_height()*1.5))
@@ -174,6 +178,9 @@ while running:
         screen.blit(play_red, play_rect)
         quit_rect.center = (450, 200)
         screen.blit(quit_red, quit_rect)
+        point_text = font_var.render("Points: "+ str(point(timer)), False, (255, 255, 255))
+        point_rect = point_text.get_rect(center=(350, 250))
+        screen.blit(point_text, point_rect)
         
         
     
